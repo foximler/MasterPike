@@ -1,0 +1,63 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #36b8ff;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+</style>
+ <form action="/claimrig" method="get">
+  <label for="rigid"><h1>Claim Rig By UUID:</h1></label>
+  <input type="text" id="uuid" name="uuid"><br><br>
+  <input type="submit" value="Submit">
+</form> 
+<h1 class="title">
+  Welcome, {{ name }}!
+<br> Here is the status of your Jigs</h1>
+
+<table class="styled-table">
+{% for item in items %}
+<tr>
+    <td>Unit ID: {{item[0]}} </td>
+    <td>Temperature: {{item[1]}} </td>
+    <td>Humidity: {{item[2]}} </td>
+    <td> Status: {{item[3]}} </td>
+    <td> Latitude: {{item[4]}} </td>
+    <td> Longitude: {{item[5]}} </td>
+    <td>Last Updated: {{item[6]}} </td>
+
+</td>
+
+{% endfor %}
+{% endblock %}
+
