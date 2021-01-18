@@ -18,8 +18,6 @@ def send_message(content, uuid):
     port = 465
     smtp_server = 'friday.mxlogin.com'
     sender_email = 'notification@masterbait.fish'
-    receiver_email = '7808318308@msg.telus.com'
-
     # Get message from file
     with open(content, 'r') as fp:
             # Create message
