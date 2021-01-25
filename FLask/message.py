@@ -6,11 +6,11 @@ def send_message(content, uuid):
     conn = sqlite3.connect('masterfish.db')
     cursor = conn.cursor()
 
-    query = f"""
+    query = """
     SELECT email FROM users
-    WHERE {uuid} = uuid
+    WHERE uuid = ?
     """
-    receiver_email = cursor.execute(query).fetchone()
+    receiver_email = cursor.execute(query, (uuid)).fetchone()s
     #no peeking
     password = ''
 
@@ -26,7 +26,7 @@ def send_message(content, uuid):
     # Create a secure SSL context
     context = ssl.create_default_context()
 
-    with smtplib.SMTP_SSL('friday.mxlogin.com', port, context=context) as server:
+    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, msg)
 
