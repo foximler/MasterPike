@@ -10,7 +10,7 @@ def send_message(content, uuid):
     SELECT email FROM users
     WHERE uuid = ?
     """
-    receiver_email = cursor.execute(query, (uuid)).fetchone()s
+    receiver_email = cursor.execute(query, (uuid)).fetchone()
     #no peeking
     password = ''
 
