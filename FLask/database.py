@@ -22,7 +22,6 @@ def create_database():
     """
 
     cursor.execute(query)
-
     cursor.close()
 
     return
@@ -33,15 +32,21 @@ def update_database(data):
     cursor = conn.cursor()
     time_status = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(data['time'])))
     data["time"]=time_status
-    query = """
-    INSERT OR REPLACE INTO users(uuid, temp, humid, alert, lat, long, time)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+
+    # Need to use some sort of UPSERT to keep the email from being updated
+    query1 = """
+    INSERT OR IGNORE INTO users(uuid, temp, humid, alert, lat, long, time)
+    VALUES(?, ?, ?, ?, ?, ?, ?)
     """
 
-    cursor.execute(
-        query,
-        (data["uuid"], data["temp"], data["humid"], data["alert"], data["lat"], data["long"], data["time"])
-    )
+    query2 = """
+    UPDATE users SET uuid=?, temp=?, humid=?, alert=?, lat=?, long=?, time=?
+    """
+
+    values = (data["uuid"], data["temp"], data["humid"], data["alert"], data["lat"], data["long"], data["time"])
+
+    cursor.execute(query1, values)
+    cursor.execute(query2, values)
     conn.commit()
     cursor.close()
     return
@@ -53,4 +58,6 @@ def getstatus(email):
     c.execute("SELECT * from users WHERE email=?",
     (email,))
     items = c.fetchall()
+    conn.commit()
+    c.close()
     return items

@@ -24,10 +24,12 @@ def api_uuid():
             return f"Error, {argument} not provided. Please specify a {argument}"
 
     update_database(argument_data)
-    if argument_data['alert'] == 1:
-        send_message('content.txt', argument_data['uuid'])
+    check = "Successful Request!"
+    if argument_data['alert'] == "1":
+       check = send_message('content.txt', argument_data['uuid'])
 
-    return "Successful request!"
+    return check
+
 @main.route('/claimrig')
 def api_claim():
     # Check if a UUID was provided as part of the URL
@@ -43,7 +45,7 @@ def api_claim():
         else:
             return f"Error, {argument} not provided. Please specify a {argument}"
 
-    claim_rig(current_user.notification,argument_data)
+    claim_rig(current_user.notification, argument_data)
     currentstatus = getstatus(str(current_user.notification))
     return render_template('profile.html', name = current_user.name, items=currentstatus, email= current_user.notification)
 
